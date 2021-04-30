@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Configuration;
 public class Config {
     @Bean
     public String fileName() {
-        return "eventsFile.csv";
+        return "C:\\Programs\\demo2\\demo\\src\\main\\resources\\eventsFile.csv";
     }
 }

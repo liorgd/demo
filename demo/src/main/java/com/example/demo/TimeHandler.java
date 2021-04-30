@@ -48,7 +48,7 @@ public class TimeHandler {
         buckets.clear();
         List<String> fileLines = eventsFile.loadFile();
         LOGGER.info("All from file:");
-        fileLines.forEach(System.out::println);
+        fileLines.forEach(str -> LOGGER.debug(str));
         String currentHandlingHour = null;
         long numOfSamples = 0;
         double sumOfTimes = 0;
