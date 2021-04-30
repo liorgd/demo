@@ -11,7 +11,7 @@ import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 
 @Component
 public class WatchFile {
-    private static Logger LOGGER = LogManager.getLogger(WatchFile.class);
+    private static final Logger LOGGER = LogManager.getLogger(WatchFile.class);
     TimeHandler timeHandler;
     String directoryName;
 
@@ -19,7 +19,7 @@ public class WatchFile {
         this.timeHandler = timeHandler;
         this.directoryName = directoryName;
 
-        Thread thread = new Thread(() -> doWatch());
+        Thread thread = new Thread(this::doWatch);
         thread.start();
     }
 
@@ -44,6 +44,5 @@ public class WatchFile {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-
     }
 }

@@ -14,7 +14,7 @@ import java.util.List;
 @Component
 public class TimeHandler {
 
-    private static Logger LOGGER = LogManager.getLogger(TimeHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger(TimeHandler.class);
 
     @Autowired
     EventsFile eventsFile;
@@ -40,7 +40,7 @@ public class TimeHandler {
         buckets.clear();
         List<String> fileLines = eventsFile.loadFile();
         LOGGER.info("All from file:");
-        fileLines.forEach(str -> LOGGER.debug(str));
+        fileLines.forEach(LOGGER::debug);
         String currentHandlingHour = null;
 
         List<Double> timesPerBucket = new ArrayList<>();
@@ -71,7 +71,7 @@ public class TimeHandler {
         }
 
         // compute the last bucket here:
-        Double sumForBucket = timesPerBucket.stream().mapToDouble(Double::doubleValue).sum();
+        double sumForBucket = timesPerBucket.stream().mapToDouble(Double::doubleValue).sum();
         double average = sumForBucket / timesPerBucket.size();
         timesPerBucket.clear();
         LOGGER.info("saving: " + currentHandlingHour + " average:" + average);

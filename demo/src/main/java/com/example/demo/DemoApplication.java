@@ -6,18 +6,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.io.IOException;
-import java.nio.file.*;
-import java.util.List;
-import static java.nio.file.StandardWatchEventKinds.*;
-
 
 @SpringBootApplication
 public class DemoApplication implements CommandLineRunner {
 
     final EventsFile eventsFile;
     TimeHandler timeHandler;
-    private static Logger LOGGER = LogManager.getLogger(DemoApplication.class);
+    private static final Logger LOGGER = LogManager.getLogger(DemoApplication.class);
 
     public DemoApplication(EventsFile eventsFile, TimeHandler timeHandler) {
         this.eventsFile = eventsFile;

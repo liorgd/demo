@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan
 public class Config {
-    final private String FILE_DIRECTORY =  "C:\\Programs\\demo2\\data";
-    final private String FILE_PATH =  FILE_DIRECTORY + "\\eventsFile.csv";
+    final private String FILE_DIRECTORY = "C:\\Programs\\demo2\\data";
+    final private String FILE_PATH = FILE_DIRECTORY + "\\eventsFile.csv";
 
     @Bean
     public String fileName() {
