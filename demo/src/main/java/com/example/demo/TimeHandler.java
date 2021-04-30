@@ -23,15 +23,7 @@ public class TimeHandler {
         return buckets;
     }
 
-    public void setBuckets(List<Bucket> buckets) {
-        this.buckets = buckets;
-    }
-
     List<Bucket> buckets = new ArrayList<>();
-
-    public void printBuckets() {
-        System.out.println(buckets);
-    }
 
     private LocalDateTime getNearestHour(String time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");

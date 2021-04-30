@@ -20,9 +20,7 @@ public class EventsFile {
 
     List<String> loadFile() {
         List<String> fileLines = new ArrayList<>();
-        ClassLoader classLoader = getClass().getClassLoader();
-
-        try (InputStream inputStream = new FileInputStream(new File(fileName));
+        try (InputStream inputStream = new FileInputStream(fileName);
              InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
              BufferedReader reader = new BufferedReader(streamReader)) {
 
