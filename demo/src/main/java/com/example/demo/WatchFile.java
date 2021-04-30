@@ -13,9 +13,11 @@ import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 public class WatchFile {
     private static Logger LOGGER = LogManager.getLogger(WatchFile.class);
     TimeHandler timeHandler;
+    String directoryName;
 
-    public WatchFile(TimeHandler timeHandler) {
+    public WatchFile(TimeHandler timeHandler, String directoryName) {
         this.timeHandler = timeHandler;
+        this.directoryName = directoryName;
 
         Thread thread = new Thread(() -> doWatch());
         thread.start();
@@ -24,7 +26,7 @@ public class WatchFile {
     private void doWatch() {
         try {
             WatchService watcher = FileSystems.getDefault().newWatchService();
-            Path logDir = Paths.get("C:\\Programs\\demo2\\data");
+            Path logDir = Paths.get(directoryName);
             logDir.register(watcher, ENTRY_MODIFY);
 
             while (true) {

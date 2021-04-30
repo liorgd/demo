@@ -21,7 +21,4 @@ public class TimeController {
     public void refresh() {
         timeHandler.processData();
     }
-
-
-
 }
