@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +13,9 @@ import java.util.List;
 
 @Component
 public class TimeHandler {
+
+    private static Logger LOGGER = LogManager.getLogger(TimeHandler.class);
+
     @Autowired
     EventsFile eventsFile;
 
@@ -36,21 +41,19 @@ public class TimeHandler {
         LocalDateTime newDatetime;
         newDatetime = datetime.minusMinutes(mod);
         newDatetime = newDatetime.truncatedTo(ChronoUnit.MINUTES);
-
-        //System.out.println("getNearestHour: " + time + " " + newDatetime);
         return newDatetime;
     }
 
     public void processData() {
         buckets.clear();
         List<String> fileLines = eventsFile.loadFile();
-        System.out.println("All from file:");
+        LOGGER.info("All from file:");
         fileLines.forEach(System.out::println);
         String currentHandlingHour = null;
         long numOfSamples = 0;
         double sumOfTimes = 0;
         double average = 0;
-        System.out.println(" calculation and results:");
+        LOGGER.info(" calculation and results:");
         for (String line : fileLines) {
             String[] values = line.split(" ");
             String nearestHour = getNearestHour(values[0] + " " + values[1]).toString();
@@ -64,7 +67,7 @@ public class TimeHandler {
                     average = sumOfTimes / numOfSamples;
                 }
                 // reset
-                System.out.println("saving: " + currentHandlingHour + " average:" + average);
+                LOGGER.info("saving: " + currentHandlingHour + " average:" + average);
                 buckets.add(new Bucket(currentHandlingHour, average));
                 currentHandlingHour = nearestHour;
                 numOfSamples = 0;
@@ -73,7 +76,7 @@ public class TimeHandler {
             } else {
                 sumOfTimes += dvalue;
                 numOfSamples++;
-                System.out.println("adding: " + dvalue + " result:" + sumOfTimes + " currentHandlingHour:" + currentHandlingHour);
+                LOGGER.info("adding: " + dvalue + " result:" + sumOfTimes + " currentHandlingHour:" + currentHandlingHour);
             }
 
         }
@@ -82,7 +85,7 @@ public class TimeHandler {
             average = sumOfTimes / numOfSamples;
         }
 
-        System.out.println("saving: " + currentHandlingHour + " average:" + average);
+        LOGGER.info("saving: " + currentHandlingHour + " average:" + average);
         buckets.add(new Bucket(currentHandlingHour, average));
     }
 
