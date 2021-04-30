@@ -42,43 +42,31 @@ public class TimeHandler {
         LOGGER.info("All from file:");
         fileLines.forEach(str -> LOGGER.debug(str));
         String currentHandlingHour = null;
-        long numOfSamples = 0;
-        double sumOfTimes = 0;
-        double average = 0;
+
+        List<Double> timesPerBucket = new ArrayList<>();
         LOGGER.info(" calculation and results:");
         for (String line : fileLines) {
             String[] values = line.split(" ");
             String nearestHour = getNearestHour(values[0] + " " + values[1]).toString();
             double dvalue = Double.parseDouble(values[2]);
+
             if (currentHandlingHour == null) {
                 currentHandlingHour = nearestHour;
             }
-            if (!currentHandlingHour.equals(nearestHour)) { // nearestHour has changed.
-                if (numOfSamples != 0) {
-                    // compute
-                    average = sumOfTimes / numOfSamples;
-                }
-                // reset
+
+            timesPerBucket.add(dvalue);
+
+            if (!currentHandlingHour.equals(nearestHour)) {
+                Double sumForBucket = timesPerBucket.stream().mapToDouble(Double::doubleValue).sum();
+                double average = sumForBucket / timesPerBucket.size();
+                timesPerBucket.clear();
                 LOGGER.info("saving: " + currentHandlingHour + " average:" + average);
                 buckets.add(new Bucket(currentHandlingHour, average));
                 currentHandlingHour = nearestHour;
-                numOfSamples = 0;
-                sumOfTimes = 0;
-
-            } else {
-                sumOfTimes += dvalue;
-                numOfSamples++;
-                LOGGER.info("adding: " + dvalue + " result:" + sumOfTimes + " currentHandlingHour:" + currentHandlingHour);
             }
 
-        }
-        if (numOfSamples != 0) {
-            // compute
-            average = sumOfTimes / numOfSamples;
-        }
 
-        LOGGER.info("saving: " + currentHandlingHour + " average:" + average);
-        buckets.add(new Bucket(currentHandlingHour, average));
+        }
     }
 
     static class Bucket {

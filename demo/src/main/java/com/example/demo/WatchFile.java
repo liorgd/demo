@@ -24,7 +24,7 @@ public class WatchFile {
     private void doWatch() {
         try {
             WatchService watcher = FileSystems.getDefault().newWatchService();
-            Path logDir = Paths.get("C:\\Programs\\demo2");
+            Path logDir = Paths.get("C:\\Programs\\demo2\\data");
             logDir.register(watcher, ENTRY_MODIFY);
 
             while (true) {
