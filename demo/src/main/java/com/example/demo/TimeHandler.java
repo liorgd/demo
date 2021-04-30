@@ -54,7 +54,9 @@ public class TimeHandler {
                 currentHandlingHour = nearestHour;
             }
 
-            timesPerBucket.add(dvalue);
+            if (currentHandlingHour.equals(nearestHour)) {
+                timesPerBucket.add(dvalue);
+            }
 
             if (!currentHandlingHour.equals(nearestHour)) {
                 Double sumForBucket = timesPerBucket.stream().mapToDouble(Double::doubleValue).sum();
@@ -63,10 +65,18 @@ public class TimeHandler {
                 LOGGER.info("saving: " + currentHandlingHour + " average:" + average);
                 buckets.add(new Bucket(currentHandlingHour, average));
                 currentHandlingHour = nearestHour;
+                timesPerBucket.add(dvalue);
             }
 
-
         }
+
+        // compute the last bucket here:
+        Double sumForBucket = timesPerBucket.stream().mapToDouble(Double::doubleValue).sum();
+        double average = sumForBucket / timesPerBucket.size();
+        timesPerBucket.clear();
+        LOGGER.info("saving: " + currentHandlingHour + " average:" + average);
+        buckets.add(new Bucket(currentHandlingHour, average));
+
     }
 
     static class Bucket {
